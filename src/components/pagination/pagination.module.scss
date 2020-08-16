@@ -1,51 +1,51 @@
 .container {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 
-    .item {
-        margin: 0 4px;
+  .item {
+    margin: 0 4px;
+  }
+
+  .btn {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 22px;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, 0.75);
     }
+  }
 
-    .btn {
-        text-decoration: none;
-        color: rgba(0, 0, 0, 0.75);
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-family: Inter;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 12px;
-        line-height: 22px;
-        outline: none;
-        border: 0;
-        cursor: pointer;
+  .active {
+    background-color: #1890ff;
+    color: #ffffff;
+    cursor: default;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: rgba(0, 0, 0, 0.75);
-        }
+    &:hover {
+      color: #ffffff;
+      background-color: #1890ff;
     }
+  }
 
-    .active {
-        background-color: #1890FF;
-        color: #FFFFFF;
-        cursor: default;
+  .disabled {
+    color: rgba(0, 0, 0, 0.35);
+    cursor: default;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: #1890FF;
-        }
+    &:hover {
+      color: rgba(0, 0, 0, 0.35);
+      background-color: unset;
     }
-
-    .disabled {
-        color: rgba(0, 0, 0, 0.35);
-        cursor: default;
-
-        &:hover {
-            color: rgba(0, 0, 0, 0.35);
-            background-color: unset;
-        }
-    }
+  }
 }

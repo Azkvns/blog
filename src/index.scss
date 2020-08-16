@@ -1,26 +1,27 @@
 @font-face {
-    font-family: Inter;
-    src: url('./fonts/Inter-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: Inter;
+  src: url('./fonts/Inter-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    font-family: Inter;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 22px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #EBEEF3;
+  margin: 0;
+  padding: 0;
+  background-color: #ebeef3;
 }
 
-#root {}
+#root {
+}
