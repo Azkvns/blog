@@ -1,0 +1,101 @@
+.container {
+    background-color: #FFFFFF;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 22px;
+    align-items: center;
+    width: 100%;
+    min-height: 80px;
+    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+
+    .title {
+        font-size: 18px;
+        line-height: 28px;
+        color: rgba(0, 0, 0, 0.85);
+
+        .link {
+            text-decoration: none;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.85);
+        }
+    }
+
+    .rightBlock {
+        display: flex;
+        align-items: center;
+
+        .person {
+            display: flex;
+            align-items: center;
+            margin-left: 27px;
+
+            .name {
+                font-size: 18px;
+                line-height: 28px;
+                color: rgba(0, 0, 0, 0.85);
+                margin-right: 13px;
+            }
+        }
+
+        .btn {
+            background-color: #ffffff;
+            border: 1px solid rgba($color: #000000, $alpha: 0.0);
+            border-radius: 5px;
+            font-family: Inter;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 28px;
+            padding: 10px 20px;
+            margin-left: 27px;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in;
+        }
+
+        .signIn {
+            color: rgba(0, 0, 0, 0.85);
+
+            &:hover {
+                color: rgba(0, 0, 0, 0.55);
+            }
+        }
+
+        .signUp {
+            color: #52C41A;
+            border-color: #52C41A;
+
+            &:hover {
+                background-color: #52C41A;
+                color: #FFFFFF;
+            }
+        }
+
+        .logOut {
+            color: rgba(0, 0, 0, 0.75);
+            border-color: rgba(0, 0, 0, 0.75);
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.75);
+                color: #FFFFFF;
+            }
+        }
+
+        .createArticle {
+            border-color: #52C41A;
+            color: #52C41A;
+            font-size: 14px;
+            line-height: 22px;
+            padding: 8px 12px;
+
+            &:hover {
+                background-color: #52C41A;
+                color: #FFFFFF;
+
+            }
+        }
+    }
+}
