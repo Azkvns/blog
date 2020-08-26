@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +9,6 @@ import avatar from '../../images/avatar.svg';
 import * as articleActions from '../../actions/articleActions';
 import * as articlesActions from '../../actions/articlesActions';
 import Like from '../like';
-import agent from '../../agent';
 
 const renderTags = (tags) => {
   return tags.map((tag) => (
@@ -45,9 +43,10 @@ const renderControlBtns = (onArticleDelete, onArticleEdit) => {
   );
 };
 
-const renderArticle = (article, body, onFavorite, onArticleDelete, onArticleEdit, isEditable) => {
+const renderArticle = (article, body, props) => {
   const { slug, title, description, tagList, createdAt, author, favorited, favoritesCount } = article;
   const { username, image } = author;
+  const { onFavorite, onArticleDelete, onArticleEdit, isEditable } = props;
 
   return (
     <article className={cls.container}>
@@ -70,9 +69,14 @@ const renderArticle = (article, body, onFavorite, onArticleDelete, onArticleEdit
               <span className={cls.name}>{username}</span>
               <time className={cls.time}>{renderDate(createdAt)}</time>
             </div>
-            <img className={image} src={avatar} width="46" alt="Person avatar" />
+            <img className={image} src={image || avatar} width="46" alt="Person avatar" />
           </div>
-          {body && isEditable && renderControlBtns(onArticleDelete, onArticleEdit)}
+          {body &&
+            isEditable &&
+            renderControlBtns(
+              () => onArticleDelete(slug),
+              () => onArticleEdit(slug)
+            )}
         </div>
       </div>
       <ReactMarkdown source={body} />
@@ -85,11 +89,14 @@ export function Article() {
   const article = useSelector((state) => state.article);
   const isEditable = username === article.author.username;
   const dispatch = useDispatch();
-
-  // const onArticleDelete = (slug) => {
-  //   agent.Articles.del(slug).dispatch();
-  // };
-
+  const history = useHistory();
+  const onArticleDelete = (slug) => {
+    dispatch(articleActions.delArticle(slug));
+    history.push('/');
+  };
+  const onArticleEdit = (slug) => {
+    history.push(`/articles/${slug}/edit`);
+  };
   const onFavorite = (slug, isChecked) => {
     dispatch(articleActions.setArticleIsFavorite(slug, isChecked));
   };
@@ -98,7 +105,7 @@ export function Article() {
       dispatch(articleActions.removeArticle());
     };
   }, [dispatch]);
-  return renderArticle(article, article.body, onFavorite, isLogged, isEditable);
+  return renderArticle(article, article.body, { onFavorite, onArticleDelete, onArticleEdit, isLogged, isEditable });
 }
 
 export function ArticlePreview(props) {
@@ -108,11 +115,5 @@ export function ArticlePreview(props) {
   const onFavorite = (slug, isChecked) => {
     dispatch(articlesActions.setArticleIsFavorite(slug, isChecked));
   };
-  return renderArticle(article, '', onFavorite, isLogged);
+  return renderArticle(article, '', { onFavorite, isLogged });
 }
-
-Article.defaultProps = {};
-
-Article.propTypes = {
-  article: PropTypes.shape({}).isRequired,
-};

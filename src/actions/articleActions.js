@@ -40,3 +40,9 @@ export const loadArticle = (slug) => (dispatch) => {
     dispatch(setArticleLoading(false));
   });
 };
+
+export const delArticle = (slug) => (dispatch) => {
+  agent.Articles.del(slug).then(() => {
+    dispatch(removeArticle());
+  });
+};

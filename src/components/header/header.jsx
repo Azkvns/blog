@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { message } from 'antd';
@@ -22,7 +22,8 @@ const renderNonAuthorizedBlock = () => {
   );
 };
 
-const renderAuthorizedBlock = (username, logout) => {
+const renderAuthorizedBlock = (user, logout) => {
+  const { username, image } = user;
   return (
     <>
       <Link className={cn(cls.btn, cls.createArticle)} to="/new-article/">
@@ -30,7 +31,7 @@ const renderAuthorizedBlock = (username, logout) => {
       </Link>
       <Link className={cls.person} to="/profile/">
         <span className={cls.name}>{username}</span>
-        <img className={cls.avatar} src={avatar} alt="your avatar" />
+        <img className={cls.avatar} src={image || avatar} alt="your avatar" />
       </Link>
       <Link className={cn(cls.btn, cls.signUp, cls.logOut)} to="/" onClick={logout}>
         Log Out
@@ -40,7 +41,7 @@ const renderAuthorizedBlock = (username, logout) => {
 };
 
 export default function Header() {
-  const { username } = useSelector((state) => state.userSession);
+  const user = useSelector((state) => state.userSession);
   const dispatch = useDispatch();
   const logout = () => {
     dispatch(actions.removeUserSession());
@@ -56,7 +57,7 @@ export default function Header() {
         </Link>
       </h1>
       <div className={cls.rightBlock}>
-        {username ? renderAuthorizedBlock(username, logout) : renderNonAuthorizedBlock()}
+        {user.isLogged ? renderAuthorizedBlock(user, logout) : renderNonAuthorizedBlock()}
       </div>
     </header>
   );

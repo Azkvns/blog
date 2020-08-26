@@ -1,9 +1,11 @@
-import { Form, Button, notification } from 'antd';
+import { Form, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 import React from 'react';
 import cn from 'classnames';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import cls from './forms.module.scss';
-import agent from '../../agent';
+import { save } from '../../actions/userSessionActions';
 import {
   renderInputText,
   renderInputPassword,
@@ -13,14 +15,22 @@ import {
 } from './forms';
 
 export default function EditProfileForm() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userSession);
+  const history = useHistory();
   const onSubmit = (data) => {
-    const { username, email, password, image } = data;
-    agent.Auth.save({ username, email, password, image })
-      .then(() => notification.success({ message: 'The data was saved successfully' }))
-      .catch(() => notification.error({ message: 'An error occurred while saving' }));
+    dispatch(save({ ...user, ...data }))
+      .then(() => {
+        message.success('The data was saved successfully', 3);
+        history.push('/');
+      })
+      .catch(() => message.error('An error occurred while saving', 3));
   };
+  if (!user.isLogged) {
+    return <Redirect to="/sign-in/" />;
+  }
   return (
-    <Form onFinish={onSubmit} className={cn(cls.container, cls.narrow)}>
+    <Form onFinish={onSubmit} initialValues={user} className={cn(cls.container, cls.narrow)}>
       <h5 className={cls.title}>Edit Profile</h5>
       {renderInputText({
         name: 'username',

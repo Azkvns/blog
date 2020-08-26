@@ -39,6 +39,7 @@ $background-color-base: #ffffff;
 
       .tagList {
         display: flex;
+        flex-wrap: wrap;
         margin-bottom: 4px;
 
         .tag {

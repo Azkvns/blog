@@ -26,13 +26,13 @@ export default function App() {
       <main className={cls.main}>
         <Switch>
           <Route exact path="/articles/page/:page" component={ArticlesPage} />
-          <Route exact path="/articles/{slug}/edit" component={EditArticleForm} />
+          <Route exact path="/articles/:slug/edit" component={EditArticleForm} />
           <Route exact path="/articles/:slug" component={ArticlePage} />
           <Route exact path="/sign-up/" component={SignUpForm} />
           <Route exact path="/sign-in/" component={SignInForm} />
           <Route exact path="/profile/" component={EditProfileForm} />
           <Route exact path="/new-article/" component={NewArticleForm} />
-          <Redirect exact from="/" to="articles/page/1" />
+          <Redirect to="/articles/page/1" />
         </Switch>
       </main>
     </div>

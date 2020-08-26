@@ -1,16 +1,17 @@
-import { Form, Button, Input } from 'antd';
+import { Form, Button, Input, message } from 'antd';
 import 'antd/dist/antd.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useParams, useHistory, Redirect } from 'react-router-dom';
+import { loadArticle } from '../../actions/articleActions';
 import agent from '../../agent';
 import cls from './forms.module.scss';
 import { renderInputText, renderTextArea } from './forms';
 
-const renderArticleForm = (onSubmit, title, initialValues) => {
+const renderArticleForm = (form, onSubmit, title, initialValues) => {
   return (
-    <Form onFinish={onSubmit} initialValues={initialValues} className={cn(cls.container, cls.wide)}>
+    <Form form={form} onFinish={onSubmit} initialValues={initialValues} className={cn(cls.container, cls.wide)}>
       <h5 className={cls.title}>{title}</h5>
       {renderInputText({
         name: 'title',
@@ -64,26 +65,62 @@ const renderArticleForm = (onSubmit, title, initialValues) => {
 };
 
 export const NewArticleForm = () => {
+  const history = useHistory();
+  const [form] = Form.useForm();
+  const isLogged = useSelector((state) => state.userSession.isLogged);
   const onSubmit = (data) => {
-    agent.Articles.create(data);
+    agent.Articles.create(data)
+      .then(() => {
+        message.success('You are successfully create article', 3);
+        history.push('/');
+      })
+      .catch((err) => {
+        form.setFields(
+          Object.entries(err).map(([field, errors]) => {
+            return { name: field, errors };
+          })
+        );
+        message.error('Creating failed', 3);
+      });
   };
-  return renderArticleForm(onSubmit, 'Create new article', { tagList: [''] });
+  return isLogged ? (
+    renderArticleForm(form, onSubmit, 'Create new article', { tagList: [''] })
+  ) : (
+    <Redirect to="/sign-in/" />
+  );
 };
 
 export const EditArticleForm = () => {
   const { slug } = useParams();
+  const history = useHistory();
   const article = useSelector((state) => state.article);
+  const isLogged = useSelector((state) => state.userSession.isLogged);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadArticle(slug));
+  }, [dispatch, slug]);
   const onSubmit = (data) => {
     const { title, description, body, tagList } = data;
-    agent.Articles.create({
-      article: {
-        ...article,
-        title,
-        description,
-        body,
-        tagList,
-      },
-    });
+    agent.Articles.update({
+      ...article,
+      title,
+      description,
+      body,
+      tagList,
+    })
+      .then(() => {
+        message.success('You are successfully edit article', 3);
+        history.push('/');
+      })
+      .catch((err) => {
+        form.setFields(
+          Object.entries(err).map(([field, errors]) => {
+            return { name: field, errors };
+          })
+        );
+        message.error('Editing failed', 3);
+      });
   };
-  return slug === article.slug && renderArticleForm(onSubmit, 'Edit article', article);
+  return isLogged ? renderArticleForm(form, onSubmit, 'Edit article', article) : <Redirect to="/sign-in/" />;
 };

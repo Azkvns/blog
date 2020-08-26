@@ -40,7 +40,7 @@ export default function ArticlesPage() {
           total={Number(articlesCount)}
           showSizeChanger={false}
           onChange={(number) => {
-            history.push(`/articles/${number}`);
+            history.push(`/articles/page/${number}`);
           }}
         />
       )}

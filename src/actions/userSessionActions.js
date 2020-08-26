@@ -28,3 +28,10 @@ export const register = (username, email, password) => (dispatch) => {
     dispatch(login(email, password));
   });
 };
+
+export const save = (user) => (dispatch) => {
+  const { username, email, password, image } = user;
+  return agent.Auth.save({ username, email, password, image }).then(() => {
+    dispatch(setUserSession(user));
+  });
+};
