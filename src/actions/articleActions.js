@@ -1,4 +1,4 @@
-import { SET_ARTICLE, SET_ARTICLE_IS_LOADED, REMOVE_ARTICLE } from '../types';
+import { SET_ARTICLE, SET_ARTICLE_LOADING, SET_ARTICLE_IS_FAVORITE, REMOVE_ARTICLE } from '../types';
 import agent from '../agent';
 
 export const setArticle = (article) => {
@@ -14,17 +14,29 @@ export const removeArticle = () => {
   };
 };
 
-export const setArticleIsLoaded = (value) => {
+export const setArticleIsFavorite = (slug, value) => {
+  if (value) {
+    agent.Articles.favorite(slug);
+  } else {
+    agent.Articles.unfavorite(slug);
+  }
   return {
-    type: SET_ARTICLE_IS_LOADED,
+    type: SET_ARTICLE_IS_FAVORITE,
+    payload: value,
+  };
+};
+
+export const setArticleLoading = (value) => {
+  return {
+    type: SET_ARTICLE_LOADING,
     payload: value,
   };
 };
 
 export const loadArticle = (slug) => (dispatch) => {
-  dispatch(setArticleIsLoaded(false));
+  dispatch(setArticleLoading(true));
   agent.Articles.get(slug).then((res) => {
     dispatch(setArticle(res.article));
-    dispatch(setArticleIsLoaded(true));
+    dispatch(setArticleLoading(false));
   });
 };

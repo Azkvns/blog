@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import cn from 'classnames';
+import { Pagination, Spin } from 'antd';
 import { loadArticles } from '../../actions/articlesActions';
 import cls from './articles-page.module.scss';
 import { ArticlePreview } from '../article';
-import Pagination from '../pagination';
+import './pagination.scss';
 
 const renderArticles = (articles) => {
   return articles.map((article) => (
@@ -15,9 +15,17 @@ const renderArticles = (articles) => {
   ));
 };
 
+const renderSpinner = () => {
+  return (
+    <div className={cls.spinnerContainer}>
+      <Spin size="large" />
+    </div>
+  );
+};
+
 export default function ArticlesPage() {
   const { page } = useParams();
-  const { articles, articlesCount, articlesIsLoaded } = useSelector((state) => state.articles);
+  const { articles, articlesCount, loading } = useSelector((state) => state.articles);
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -25,16 +33,17 @@ export default function ArticlesPage() {
   }, [page, dispatch]);
   return (
     <div className={cls.container}>
-      <ul className={cn(cls.list, { [cls.disabledList]: !articlesIsLoaded })}>{renderArticles(articles)}</ul>
-      <Pagination
-        current={Number(page)}
-        pageSize={10}
-        total={Number(articlesCount)}
-        onChange={(number) => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          history.push(`/articles/${number}`);
-        }}
-      />
+      <ul className={cls.list}>{loading ? renderSpinner() : renderArticles(articles)}</ul>
+      {!loading && (
+        <Pagination
+          current={Number(page)}
+          total={Number(articlesCount)}
+          showSizeChanger={false}
+          onChange={(number) => {
+            history.push(`/articles/${number}`);
+          }}
+        />
+      )}
     </div>
   );
 }

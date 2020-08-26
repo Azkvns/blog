@@ -5,6 +5,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: Roboto;
+  src: url('./fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('./fonts/Roboto-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -20,8 +34,5 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: #ebeef3;
-}
-
-#root {
+  background-color: #ebeef3 !important;
 }
