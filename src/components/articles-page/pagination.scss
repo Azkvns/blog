@@ -1,17 +1,16 @@
 $transparent: rgba(0, 0, 0, 0) !important;
 
 .ant-pagination {
+  &-item,
+  &-prev button,
+  &-next button {
+    background-color: $transparent;
+    border-color: $transparent;
+  }
 
-    &-item,
-    &-prev button,
-    &-next button {
-        background-color: $transparent;
-        border-color: $transparent;
-    }
-
-    &-item-active a {
-        background-color: #1890FF !important;
-        color: white !important;
-        border-radius: 4px !important;
-    }
+  &-item-active a {
+    background-color: #1890ff !important;
+    color: white !important;
+    border-radius: 4px !important;
+  }
 }
