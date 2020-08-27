@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { Pagination, Spin } from 'antd';
+import { Pagination, Spin, Result } from 'antd';
 import { loadArticles } from '../../actions/articlesActions';
 import cls from './articles-page.module.scss';
 import { ArticlePreview } from '../article';
@@ -25,16 +25,19 @@ const renderSpinner = () => {
 
 export default function ArticlesPage() {
   const { page } = useParams();
-  const { articles, articlesCount, loading } = useSelector((state) => state.articles);
+  const { articles, articlesCount, loaded, loadingError } = useSelector((state) => state.articles);
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadArticles(Number(page)));
   }, [page, dispatch]);
+  if (loadingError) {
+    return <Result status="error" title="Oops, something went wrong" />;
+  }
   return (
     <div className={cls.container}>
-      <ul className={cls.list}>{loading ? renderSpinner() : renderArticles(articles)}</ul>
-      {!loading && (
+      <ul className={cls.list}>{loaded ? renderArticles(articles) : renderSpinner()}</ul>
+      {loaded && (
         <Pagination
           current={Number(page)}
           total={Number(articlesCount)}

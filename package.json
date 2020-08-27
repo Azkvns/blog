@@ -6,24 +6,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "ant-design": "^1.0.0",
     "antd": "^4.5.4",
-    "babel-eslint": "^10.1.0",
     "classnames": "^2.2.6",
     "css-modules": "^0.3.0",
-    "date-fns": "^2.15.0",
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.0.8",
-    "husky": "^4.2.5",
-    "ky": "^0.23.0",
-    "lint-staged": "^10.2.11",
     "node-sass": "^4.14.1",
-    "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -34,8 +20,7 @@
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "superagent": "^6.0.0",
-    "superagent-promise": "^1.1.0"
+    "superagent": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -73,5 +58,18 @@
       "npm run lint:fix",
       "npm run format"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "babel-eslint": "^10.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
   }
 }

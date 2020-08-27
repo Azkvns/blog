@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { format } from 'date-fns';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
@@ -19,7 +18,9 @@ const renderTags = (tags) => {
 };
 
 const renderDate = (timestamp) => {
-  return format(Date.parse(timestamp), 'MMMM d, yyyy');
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(
+    Date.parse(timestamp)
+  );
 };
 
 const renderControlBtns = (onArticleDelete, onArticleEdit) => {
@@ -105,6 +106,7 @@ export function Article() {
       dispatch(articleActions.removeArticle());
     };
   }, [dispatch]);
+
   return renderArticle(article, article.body, { onFavorite, onArticleDelete, onArticleEdit, isLogged, isEditable });
 }
 
