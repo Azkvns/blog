@@ -1,6 +1,10 @@
 .container {
-  padding-top: 106px;
+  padding-top: 136px;
   padding-bottom: 30px;
+
+  @media (min-width: 595px) {
+    padding-top: 106px;
+  }
 
   .main {
     display: flex;

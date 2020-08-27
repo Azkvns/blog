@@ -4,7 +4,8 @@ $background-color-base: #ffffff;
 .container {
   display: flex;
   flex-direction: column;
-  width: 941px;
+  width: 90vw;
+  max-width: 941px;
   background-color: $background-color-base;
   border-radius: 5px;
   padding: 15px 19px;
@@ -12,7 +13,12 @@ $background-color-base: #ffffff;
 
   .header {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
+
+    @media (min-width: 768px) {
+      flex-wrap: nowrap;
+    }
 
     .articleInfo {
       margin-right: 85px;
