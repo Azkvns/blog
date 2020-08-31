@@ -2,10 +2,10 @@ import { Form, Divider, Checkbox, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 import { useHistory, Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import cls from './forms.module.scss';
-import { register } from '../../actions/userSessionActions';
+import { register } from '../../redux/actions/userSessionActions';
 import {
   renderInputText,
   renderInputPassword,
@@ -23,6 +23,7 @@ const validateRepeatedPassword = ({ getFieldValue }) => ({
 
 export default function SignUpForm() {
   const [isPolicyAdopted, setIsPolicyAdopted] = useState(true);
+  const isSubmited = useSelector((state) => state.forms.isSubmited);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -32,7 +33,7 @@ export default function SignUpForm() {
       .then(() => {
         message.success('Account created successfully', 3);
         form.resetFields();
-        history.push('/');
+        history.goBack();
       })
       .catch((err) => {
         form.setFields(
@@ -99,7 +100,7 @@ export default function SignUpForm() {
           I agree to the processing of my personal information
         </Checkbox>
       </Form.Item>
-      <Button className={cls.submit} type="primary" htmlType="submit" disabled={!isPolicyAdopted}>
+      <Button className={cls.submit} type="primary" htmlType="submit" disabled={!isPolicyAdopted || isSubmited}>
         Create
       </Button>
       <p className={cls.text}>

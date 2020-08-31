@@ -3,37 +3,37 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { message } from 'antd';
-import * as actions from '../../actions/userSessionActions';
-import avatar from '../../images/avatar.svg';
+import { logout } from '../../redux/actions/userSessionActions';
+import avatar from '../../resources/images/avatar.svg';
 import cls from './header.module.scss';
-import agent from '../../agent';
+import * as routes from '../../routing/routes';
 
 // eslint-disable-next-line no-unused-vars
 const renderNonAuthorizedBlock = () => {
   return (
     <>
-      <Link className={cn(cls.btn, cls.signIn)} to="/sign-in/">
+      <Link className={cn(cls.btn, cls.signIn)} to={routes.auth.login()}>
         Sign In
       </Link>
-      <Link className={cn(cls.btn, cls.signUp)} to="/sign-up/">
+      <Link className={cn(cls.btn, cls.signUp)} to={routes.user.create()}>
         Sign Up
       </Link>
     </>
   );
 };
 
-const renderAuthorizedBlock = (user, logout) => {
+const renderAuthorizedBlock = (user, onLogout) => {
   const { username, image } = user;
   return (
     <>
-      <Link className={cn(cls.btn, cls.createArticle)} to="/new-article/">
+      <Link className={cn(cls.btn, cls.createArticle)} to={routes.articles.create()}>
         Create articles
       </Link>
-      <Link className={cls.person} to="/profile/">
+      <Link className={cls.person} to={routes.user.edit()}>
         <span className={cls.name}>{username}</span>
         <img className={cls.avatar} src={image || avatar} alt="your avatar" />
       </Link>
-      <Link className={cn(cls.btn, cls.signUp, cls.logOut)} to="/" onClick={logout}>
+      <Link className={cn(cls.btn, cls.signUp, cls.logOut)} to={routes.articles.all()} onClick={onLogout}>
         Log Out
       </Link>
     </>
@@ -43,10 +43,8 @@ const renderAuthorizedBlock = (user, logout) => {
 export default function Header() {
   const user = useSelector((state) => state.userSession);
   const dispatch = useDispatch();
-  const logout = () => {
-    dispatch(actions.removeUserSession());
-    localStorage.removeItem('userSession');
-    agent.setToken(null);
+  const onLogout = () => {
+    dispatch(logout());
     message.info('you are logged out', 3);
   };
   return (
@@ -57,7 +55,7 @@ export default function Header() {
         </Link>
       </h1>
       <div className={cls.rightBlock}>
-        {user.isLogged ? renderAuthorizedBlock(user, logout) : renderNonAuthorizedBlock()}
+        {user.isLogged ? renderAuthorizedBlock(user, onLogout) : renderNonAuthorizedBlock()}
       </div>
     </header>
   );

@@ -1,4 +1,4 @@
-import { SET_USER_SESSION, REMOVE_USER_SESSION } from '../types';
+import { SET_USER_SESSION, REMOVE_USER_SESSION } from '../actionTypes';
 
 export default function userReducer(state = { isLogged: false }, action) {
   switch (action.type) {

@@ -2,10 +2,10 @@ import { Form, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 import React from 'react';
 import cn from 'classnames';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from './forms.module.scss';
-import { save } from '../../actions/userSessionActions';
+import { save } from '../../redux/actions/userSessionActions';
 import {
   renderInputText,
   renderInputPassword,
@@ -17,18 +17,16 @@ import {
 export default function EditProfileForm() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSession);
+  const isSubmited = useSelector((state) => state.forms.isSubmited);
   const history = useHistory();
   const onSubmit = (data) => {
     dispatch(save({ ...user, ...data }))
       .then(() => {
         message.success('The data was saved successfully', 3);
-        history.push('/');
+        history.goBack();
       })
       .catch(() => message.error('An error occurred while saving', 3));
   };
-  if (!user.isLogged) {
-    return <Redirect to="/sign-in/" />;
-  }
   return (
     <Form onFinish={onSubmit} initialValues={user} className={cn(cls.container, cls.narrow)}>
       <h5 className={cls.title}>Edit Profile</h5>
@@ -61,7 +59,7 @@ export default function EditProfileForm() {
         placeholder: 'Avatar image',
         rules: [{ pattern: URL_VALIDATE_PATTERN, message: 'Image utl must be correct' }],
       })}
-      <Button className={cls.submit} type="primary" htmlType="submit">
+      <Button className={cls.submit} type="primary" htmlType="submit" disabled={isSubmited}>
         Save
       </Button>
     </Form>

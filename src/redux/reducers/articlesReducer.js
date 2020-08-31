@@ -3,16 +3,16 @@ import {
   SET_ARTICLES_COUNT,
   SET_PAGE,
   SET_ARTICLES_LOADED,
-  SET_ARTICLE_IS_FAVORITE,
+  ARTICLE_FAVORITE_SUCCESS,
+  ARTICLE_FAVORITE_ERROR,
   SET_ARTICLES_LOADING_ERROR,
-} from '../types';
+} from '../actionTypes';
 
-const handleSetArticleIsFavorite = (articles, payload) => {
-  const { slug, value } = payload;
+const handleSetArticleIsFavorite = (articles, slug, isFavorite) => {
   return articles.map((article) => {
     if (article.slug === slug) {
-      const additional = value ? 1 : -1;
-      return { ...article, favorited: value, favoritesCount: article.favoritesCount + additional };
+      const additional = isFavorite ? 1 : -1;
+      return { ...article, favorited: isFavorite, favoritesCount: article.favoritesCount + additional };
     }
     return article;
   });
@@ -30,8 +30,12 @@ export default function ArticlesReducer(state = { page: 1, articles: [], article
       return { ...state, loadingError: action.payload };
     case SET_PAGE:
       return { ...state, page: action.payload };
-    case SET_ARTICLE_IS_FAVORITE:
-      return { ...state, articles: handleSetArticleIsFavorite(state.articles, action.payload) };
+    case ARTICLE_FAVORITE_SUCCESS:
+    case ARTICLE_FAVORITE_ERROR:
+      return {
+        ...state,
+        articles: handleSetArticleIsFavorite(state.articles, action.payload.slug, action.payload.isFavorite),
+      };
     default:
       return state;
   }

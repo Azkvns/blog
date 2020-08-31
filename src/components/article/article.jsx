@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import { Tag, Button, Popconfirm } from 'antd';
 import cls from './article.module.scss';
-import avatar from '../../images/avatar.svg';
-import * as articleActions from '../../actions/articleActions';
-import * as articlesActions from '../../actions/articlesActions';
+import avatar from '../../resources/images/avatar.svg';
+import * as articlesActions from '../../redux/actions/articlesActions';
 import Like from '../like';
+import { articles } from '../../routing/routes';
 
 const renderTags = (tags) => {
   return tags.map((tag) => (
@@ -55,7 +55,7 @@ const renderArticle = (article, body, props) => {
         <div className={cls.articleInfo}>
           <div className={cls.titleWrapper}>
             <h5 className={cls.title}>
-              <Link className={cls.link} to={`/articles/${slug}`}>
+              <Link className={cls.link} to={articles.bySlug(slug)}>
                 {title}
               </Link>
             </h5>
@@ -72,8 +72,7 @@ const renderArticle = (article, body, props) => {
             </div>
             <img className={image} src={image || avatar} width="46" alt="Person avatar" />
           </div>
-          {body &&
-            isEditable &&
+          {isEditable &&
             renderControlBtns(
               () => onArticleDelete(slug),
               () => onArticleEdit(slug)
@@ -85,28 +84,22 @@ const renderArticle = (article, body, props) => {
   );
 };
 
-export function Article() {
+export function Article(props) {
+  const { article } = props;
   const { isLogged, username } = useSelector((state) => state.userSession);
-  const article = useSelector((state) => state.article);
   const isEditable = username === article.author.username;
   const dispatch = useDispatch();
   const history = useHistory();
   const onArticleDelete = (slug) => {
-    dispatch(articleActions.delArticle(slug));
-    history.push('/');
+    dispatch(articlesActions.delArticle(slug));
+    history.push(articles.all());
   };
   const onArticleEdit = (slug) => {
-    history.push(`/articles/${slug}/edit`);
+    history.push(articles.edit(slug));
   };
   const onFavorite = (slug, isChecked) => {
-    dispatch(articleActions.setArticleIsFavorite(slug, isChecked));
+    dispatch(articlesActions.favoriteArticle(slug, isChecked));
   };
-  useEffect(() => {
-    return () => {
-      dispatch(articleActions.removeArticle());
-    };
-  }, [dispatch]);
-
   return renderArticle(article, article.body, { onFavorite, onArticleDelete, onArticleEdit, isLogged, isEditable });
 }
 
@@ -115,7 +108,7 @@ export function ArticlePreview(props) {
   const { isLogged } = useSelector((state) => state.userSession);
   const dispatch = useDispatch();
   const onFavorite = (slug, isChecked) => {
-    dispatch(articlesActions.setArticleIsFavorite(slug, isChecked));
+    dispatch(articlesActions.favoriteArticle(slug, isChecked));
   };
   return renderArticle(article, '', { onFavorite, isLogged });
 }

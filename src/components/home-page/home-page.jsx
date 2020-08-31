@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
 import { Pagination, Spin, Result } from 'antd';
-import { loadArticles } from '../../actions/articlesActions';
-import cls from './articles-page.module.scss';
+import { loadArticles, setPage } from '../../redux/actions/articlesActions';
+import cls from './home-page.module.scss';
 import { ArticlePreview } from '../article';
 import './pagination.scss';
 
@@ -23,10 +22,8 @@ const renderSpinner = () => {
   );
 };
 
-export default function ArticlesPage() {
-  const { page } = useParams();
-  const { articles, articlesCount, loaded, loadingError } = useSelector((state) => state.articles);
-  const history = useHistory();
+export default function HomePage() {
+  const { articles, articlesCount, loaded, loadingError, page } = useSelector((state) => state.articles);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadArticles(Number(page)));
@@ -42,9 +39,7 @@ export default function ArticlesPage() {
           current={Number(page)}
           total={Number(articlesCount)}
           showSizeChanger={false}
-          onChange={(number) => {
-            history.push(`/articles/page/${number}`);
-          }}
+          onChange={(number) => dispatch(setPage(number))}
         />
       )}
     </div>
